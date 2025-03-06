@@ -2,14 +2,14 @@ export interface ImageType {
   id: string;
   url: string;
   caption: string | null;
-  createdAt: string;
+  created_at: string;
 }
 
 export interface CommentType {
   id: string;
   content: string;
-  createdAt: string;
-  imageId: string;
-  parentId: string | null;
+  created_at: string;
+  image_id: string;
+  parent_id: string | null;
   replies?: CommentType[];
 }
