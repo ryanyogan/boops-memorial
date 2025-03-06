@@ -24,12 +24,6 @@ export default function Header() {
           >
             About Eddy
           </Link>
-          <Link
-            href="/memories"
-            className="text-sm font-medium hover:text-foreground/80"
-          >
-            Share a Memory
-          </Link>
         </nav>
 
         <div className="ml-auto md:hidden">

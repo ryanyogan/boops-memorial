@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createMemory } from "@/lib/actions";
 import { cn } from "@/lib/utils";
+import { useUploadThing } from "@/utils/uploadthing";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -28,11 +29,7 @@ const formSchema = z.object({
   date: z.string().optional(),
 });
 
-interface UploadFormProps {
-  onSuccess: () => void;
-}
-
-export default function UploadForm({ onSuccess }: UploadFormProps) {
+export default function UploadForm() {
   const router = useRouter();
   const [isUploading, setIsUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
@@ -44,6 +41,8 @@ export default function UploadForm({ onSuccess }: UploadFormProps) {
       date: new Date().toISOString().split("T")[0],
     },
   });
+
+  const { startUpload } = useUploadThing("mediaUploader");
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -66,7 +65,6 @@ export default function UploadForm({ onSuccess }: UploadFormProps) {
       });
 
       router.refresh();
-      onSuccess();
     } catch (error) {
       console.error("Upload failed:", error);
     } finally {

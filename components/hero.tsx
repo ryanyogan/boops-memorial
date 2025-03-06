@@ -1,4 +1,3 @@
-import { PawPrint } from "lucide-react";
 import Image from "next/image";
 
 export default function Hero() {
@@ -14,11 +13,10 @@ export default function Hero() {
         sizes="100vw"
       />
       <div className="relative z-20 container flex flex-col items-center justify-center h-full text-center px-4 space-y-6">
-        <PawPrint className="h-14 w-14 text-primary animate-bounce-slow" />
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white drop-shadow-md">
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-neutral-800 drop-shadow-md">
           Remembering Edison
         </h1>
-        <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto drop-shadow-md">
+        <p className="text-lg md:text-xl text-neutral-900 max-w-2xl mx-auto drop-shadow-md">
           A beautiful life, filled with love, joy, and countless precious
           moments
         </p>
