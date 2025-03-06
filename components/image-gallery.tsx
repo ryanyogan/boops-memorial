@@ -1,63 +1,65 @@
-"use client"
+"use client";
 
-import { useCallback, useEffect, useRef, useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { motion } from "framer-motion"
-import type { ImageType } from "@/lib/types"
-import { formatDate } from "@/lib/utils"
-import { useInView } from "react-intersection-observer"
+import type { ImageType } from "@/lib/types";
+import { formatDate } from "@/lib/utils";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useInView } from "react-intersection-observer";
 
 interface ImageGalleryProps {
-  images: ImageType[]
+  images: ImageType[];
 }
 
 export function ImageGallery({ images }: ImageGalleryProps) {
-  const [visibleImages, setVisibleImages] = useState<ImageType[]>([])
-  const loadMoreRef = useRef<HTMLDivElement>(null)
+  const [visibleImages, setVisibleImages] = useState<ImageType[]>([]);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
   const { ref, inView } = useInView({
     threshold: 0.1,
-  })
+  });
 
   // Simulate loading more images when scrolling
   const loadMoreImages = useCallback(() => {
-    const currentLength = visibleImages.length
-    const nextBatch = images.slice(currentLength, currentLength + 6)
+    const currentLength = visibleImages.length;
+    const nextBatch = images.slice(currentLength, currentLength + 6);
     if (nextBatch.length > 0) {
-      setVisibleImages((prev) => [...prev, ...nextBatch])
+      setVisibleImages((prev) => [...prev, ...nextBatch]);
     }
-  }, [images, visibleImages])
+  }, [images, visibleImages]);
 
   // Initial load
   useEffect(() => {
-    setVisibleImages(images.slice(0, 12))
-  }, [images])
+    setVisibleImages(images.slice(0, 12));
+  }, [images]);
 
   // Load more when scrolling to the bottom
   useEffect(() => {
     if (inView) {
-      loadMoreImages()
+      loadMoreImages();
     }
-  }, [inView, loadMoreImages])
+  }, [inView, loadMoreImages]);
 
   // Group images by month and year
   const groupedImages = visibleImages.reduce(
     (acc, image) => {
-      const date = new Date(image.createdAt)
+      const date = new Date(image.created_at);
       const monthYear = date.toLocaleDateString("en-US", {
         month: "long",
         year: "numeric",
-      })
+      });
 
       if (!acc[monthYear]) {
-        acc[monthYear] = []
+        acc[monthYear] = [];
       }
 
-      acc[monthYear].push(image)
-      return acc
+      acc[monthYear].push(image);
+      return acc;
     },
-    {} as Record<string, ImageType[]>,
-  )
+    {} as Record<string, ImageType[]>
+  );
+
+  console.log(groupedImages);
 
   return (
     <div className="space-y-16">
@@ -73,7 +75,10 @@ export function ImageGallery({ images }: ImageGalleryProps) {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group"
               >
-                <Link href={`/photos/${image.id}`} className="block overflow-hidden rounded-lg bg-muted">
+                <Link
+                  href={`/photos/${image.id}`}
+                  className="block overflow-hidden rounded-lg bg-muted"
+                >
                   <div className="aspect-square relative overflow-hidden rounded-lg transition-transform duration-300 group-hover:scale-105">
                     <Image
                       src={image.url || "/placeholder.svg"}
@@ -84,8 +89,12 @@ export function ImageGallery({ images }: ImageGalleryProps) {
                     />
                   </div>
                   <div className="p-3">
-                    <p className="text-sm font-medium truncate">{image.caption || "Edison"}</p>
-                    <p className="text-xs text-muted-foreground">{formatDate(image.createdAt)}</p>
+                    <p className="text-sm font-medium truncate">
+                      {image.caption || "Edison"}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {formatDate(image.created_at)}
+                    </p>
                   </div>
                 </Link>
               </motion.div>
@@ -95,6 +104,5 @@ export function ImageGallery({ images }: ImageGalleryProps) {
       ))}
       <div ref={ref} className="h-10" />
     </div>
-  )
+  );
 }
-

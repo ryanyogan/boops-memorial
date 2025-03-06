@@ -1,34 +1,20 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { Menu, PawPrint } from "lucide-react"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 
-interface MobileMenuProps {
-  session: boolean
-}
-
-export default function MobileMenu({ session }: MobileMenuProps) {
-  const [open, setOpen] = useState(false)
+export default function MobileMenu() {
+  const [open, setOpen] = useState(false);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="md:hidden">
-          <Menu className="h-5 w-5" />
-          <span className="sr-only">Toggle menu</span>
-        </Button>
+        <Menu className="h-6 w-6" />
       </SheetTrigger>
       <SheetContent side="right">
-        <SheetHeader className="mb-4">
-          <SheetTitle className="flex items-center gap-2">
-            <PawPrint className="h-5 w-5" />
-            Edison Memorial
-          </SheetTitle>
-        </SheetHeader>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col space-y-4">
           <Link
             href="/"
             className="text-foreground py-2 hover:text-muted-foreground transition-colors"
@@ -50,37 +36,8 @@ export default function MobileMenu({ session }: MobileMenuProps) {
           >
             Share a Memory
           </Link>
-
-          <div className="h-px w-full bg-muted my-2" />
-
-          {session ? (
-            <>
-              <Link
-                href="/profile"
-                className="text-foreground py-2 hover:text-muted-foreground transition-colors"
-                onClick={() => setOpen(false)}
-              >
-                My Profile
-              </Link>
-              <Button variant="outline" onClick={() => setOpen(false)}>
-                Sign out
-              </Button>
-            </>
-          ) : (
-            <>
-              <Link
-                href="/login"
-                className="text-foreground py-2 hover:text-muted-foreground transition-colors"
-                onClick={() => setOpen(false)}
-              >
-                Sign in
-              </Link>
-              <Button onClick={() => setOpen(false)}>Sign up</Button>
-            </>
-          )}
         </div>
       </SheetContent>
     </Sheet>
-  )
+  );
 }
-

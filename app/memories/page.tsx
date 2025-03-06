@@ -1,16 +1,14 @@
-import { auth } from "@/lib/auth"
-import { redirect } from "next/navigation"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { ChevronLeft } from "lucide-react"
-import UploadForm from "@/components/upload-form"
+"use client";
 
-export default async function MemoriesPage() {
-  const session = await auth()
+import { Button } from "@/components/ui/button";
+import { createMemory } from "@/lib/actions";
+import { UploadButton } from "@/utils/uploadthing";
+import { ChevronLeft } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-  if (!session) {
-    redirect("/login?callbackUrl=/memories")
-  }
+export default function MemoriesPage() {
+  const router = useRouter();
 
   return (
     <div className="container py-12 max-w-2xl">
@@ -26,14 +24,35 @@ export default async function MemoriesPage() {
       <div className="space-y-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-2">Share a Memory of Edison</h1>
-          <p className="text-muted-foreground">Upload a photo or video to add to Edison's memorial gallery</p>
+          <p className="text-muted-foreground">
+            Upload a photo or video to add to Edison's memorial gallery
+          </p>
         </div>
 
         <div className="border rounded-lg p-6 bg-card">
-          <UploadForm onSuccess={() => {}} />
+          <UploadButton
+            endpoint="imageUploader"
+            onClientUploadComplete={async (res) => {
+              if (!res?.[0]) return;
+
+              const file = res[0];
+              await createMemory({
+                url: file.url,
+                name: file.name,
+                size: file.size,
+                caption: "",
+                date: new Date().toISOString(),
+              });
+
+              router.refresh();
+              alert("Upload Completed");
+            }}
+            onUploadError={(error: Error) => {
+              alert(`ERROR! ${error.message}`);
+            }}
+          />
         </div>
       </div>
     </div>
-  )
+  );
 }
-

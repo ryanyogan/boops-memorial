@@ -1,17 +1,16 @@
-import Image from "next/image"
-import Link from "next/link"
-import type { ImageType } from "@/lib/types"
-import { Button } from "@/components/ui/button"
-import { formatDate } from "@/lib/utils"
-import { ChevronLeft } from "lucide-react"
-import CommentSection from "./comment-section"
+import { Button } from "@/components/ui/button";
+import type { ImageType } from "@/lib/types";
+import { formatDate } from "@/lib/utils";
+import { ChevronLeft } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import CommentSection from "./comment-section";
 
 interface ImageDetailProps {
-  image: ImageType
-  isAuthenticated: boolean
+  image: ImageType;
 }
 
-export default function ImageDetail({ image, isAuthenticated }: ImageDetailProps) {
+export default function ImageDetail({ image }: ImageDetailProps) {
   return (
     <div className="flex flex-col space-y-8">
       <div className="flex items-center">
@@ -37,12 +36,13 @@ export default function ImageDetail({ image, isAuthenticated }: ImageDetailProps
 
         <div className="mt-6">
           <h1 className="text-3xl font-bold">{image.caption || "Edison"}</h1>
-          <p className="text-muted-foreground mt-1">{formatDate(image.createdAt)}</p>
+          <p className="text-muted-foreground mt-1">
+            {formatDate(image.created_at)}
+          </p>
           <div className="my-8 h-px w-full bg-muted" />
-          <CommentSection imageId={image.id} isAuthenticated={isAuthenticated} />
+          <CommentSection imageId={image.id} />
         </div>
       </div>
     </div>
-  )
+  );
 }
-

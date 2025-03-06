@@ -1,17 +1,14 @@
-import { auth } from "@/lib/auth"
-import { getImages } from "@/lib/db"
-import Gallery from "@/components/gallery"
-import Hero from "@/components/hero"
+import Gallery from "@/components/gallery";
+import Hero from "@/components/hero";
+import { getImages } from "@/lib/db";
 
 export default async function Home() {
-  const session = await auth()
-  const images = await getImages()
+  const images = await getImages();
 
   return (
     <main className="min-h-screen">
       <Hero />
-      <Gallery images={images} isAuthenticated={!!session} />
+      <Gallery images={images} />
     </main>
-  )
+  );
 }
-

@@ -1,25 +1,24 @@
-"use client"
+"use client";
 
-import { useRouter } from "next/navigation"
-import Image from "next/image"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
-import type { ImageType } from "@/lib/types"
-import { X } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { formatDate } from "@/lib/utils"
-import CommentSection from "./comment-section"
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import type { ImageType } from "@/lib/types";
+import { formatDate } from "@/lib/utils";
+import { X } from "lucide-react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import CommentSection from "./comment-section";
 
 interface ImageModalProps {
-  image: ImageType
-  isAuthenticated: boolean
+  image: ImageType;
 }
 
-export function ImageModal({ image, isAuthenticated }: ImageModalProps) {
-  const router = useRouter()
+export function ImageModal({ image }: ImageModalProps) {
+  const router = useRouter();
 
   const onClose = () => {
-    router.back()
-  }
+    router.back();
+  };
 
   return (
     <Dialog open={true} onOpenChange={() => onClose()}>
@@ -45,15 +44,18 @@ export function ImageModal({ image, isAuthenticated }: ImageModalProps) {
           </div>
           <div className="flex flex-col h-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
-              <h2 className="text-2xl font-bold mb-2">{image.caption || "Edison"}</h2>
-              <p className="text-sm text-muted-foreground mb-4">{formatDate(image.createdAt)}</p>
+              <h2 className="text-2xl font-bold mb-2">
+                {image.caption || "Edison"}
+              </h2>
+              <p className="text-sm text-muted-foreground mb-4">
+                {formatDate(image.created_at)}
+              </p>
               <div className="h-px w-full bg-muted mb-6" />
-              <CommentSection imageId={image.id} isAuthenticated={isAuthenticated} />
+              <CommentSection imageId={image.id} />
             </div>
           </div>
         </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
-
